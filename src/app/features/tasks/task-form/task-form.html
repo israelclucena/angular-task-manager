@@ -1,0 +1,80 @@
+<div class="form-container">
+  <h2>{{ isEditMode() ? 'Edit Task' : 'Create Task' }}</h2>
+
+  @if (loading()) {
+    <div class="loading">Loading...</div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="task-form">
+      <div class="form-field">
+        <label for="title">Title</label>
+        <input id="title" type="text" formControlName="title" placeholder="Task title" />
+        @if (form.controls.title.touched && form.controls.title.errors) {
+          <div class="field-error">
+            @if (form.controls.title.errors['required']) {
+              <span>Title is required.</span>
+            } @else if (form.controls.title.errors['minLengthTrimmed']) {
+              <span>Title must be at least {{ form.controls.title.errors['minLengthTrimmed'].requiredLength }} characters.</span>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" rows="3" placeholder="Task description"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="priority">Priority</label>
+          <select id="priority" formControlName="priority">
+            <option value="HIGH">High</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="LOW">Low</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="status">Status</label>
+          <select id="status" formControlName="status">
+            <option value="TODO">To Do</option>
+            <option value="IN_PROGRESS">In Progress</option>
+            <option value="DONE">Done</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="category">Category</label>
+          <select id="category" formControlName="categoryId">
+            @for (cat of categories(); track cat.id) {
+              <option [value]="cat.id">{{ cat.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="dueDate">Due Date</label>
+          <input id="dueDate" type="date" formControlName="dueDate" />
+          @if (form.controls.dueDate.touched && form.controls.dueDate.errors) {
+            <div class="field-error">
+              @if (form.controls.dueDate.errors['required']) {
+                <span>Due date is required.</span>
+              } @else if (form.controls.dueDate.errors['futureDate']) {
+                <span>Due date must be in the future.</span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-cancel" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="btn btn-submit" [disabled]="loading()">
+          {{ isEditMode() ? 'Update' : 'Create' }} Task
+        </button>
+      </div>
+    </form>
+  }
+</div>

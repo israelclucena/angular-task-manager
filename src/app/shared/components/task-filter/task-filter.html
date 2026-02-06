@@ -1,0 +1,31 @@
+<div class="filter-bar">
+  <div class="filter-group">
+    <input
+      type="text"
+      class="filter-input"
+      placeholder="Search tasks..."
+      [(ngModel)]="search"
+      (ngModelChange)="onFilterChange()"
+    />
+  </div>
+
+  <div class="filter-group">
+    <select class="filter-select" [(ngModel)]="status" (ngModelChange)="onFilterChange()">
+      <option value="">All Statuses</option>
+      <option value="TODO">To Do</option>
+      <option value="IN_PROGRESS">In Progress</option>
+      <option value="DONE">Done</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <select class="filter-select" [(ngModel)]="priority" (ngModelChange)="onFilterChange()">
+      <option value="">All Priorities</option>
+      <option value="HIGH">High</option>
+      <option value="MEDIUM">Medium</option>
+      <option value="LOW">Low</option>
+    </select>
+  </div>
+
+  <button class="btn-clear" (click)="onClear()">Clear</button>
+</div>
