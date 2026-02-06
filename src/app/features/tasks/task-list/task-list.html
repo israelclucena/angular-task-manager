@@ -1,0 +1,32 @@
+<div class="task-list-container">
+  <div class="list-header">
+    <h2>Tasks</h2>
+    <span class="task-count">{{ store.taskCount() }} tasks</span>
+  </div>
+
+  <app-task-filter (filtersChange)="onFiltersChange($event)" />
+
+  @if (store.loading()) {
+    <div class="loading">Loading tasks...</div>
+  } @else if (store.error()) {
+    <div class="error">
+      <p>{{ store.error() }}</p>
+      <button class="btn-retry" (click)="store.loadTasks()">Retry</button>
+    </div>
+  } @else {
+    <div class="task-grid">
+      @for (task of store.filteredTasks(); track task.id) {
+        <app-task-card
+          [task]="task"
+          (edit)="onEditTask($event)"
+          (delete)="onDeleteTask($event)"
+          (statusChange)="onStatusChange($event)"
+        />
+      } @empty {
+        <div class="empty-state">
+          <p>No tasks found. Create one to get started!</p>
+        </div>
+      }
+    </div>
+  }
+</div>

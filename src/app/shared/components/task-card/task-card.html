@@ -1,0 +1,32 @@
+<div class="task-card" [class]="statusClass">
+  <div class="card-header">
+    <span class="priority-badge" [class]="priorityClass">{{ task().priority }}</span>
+    <span class="status-badge" [class]="statusClass">{{ task().status.replace('_', ' ') }}</span>
+  </div>
+
+  <h3 class="card-title">{{ task().title }}</h3>
+
+  @if (task().description) {
+    <p class="card-description">{{ task().description }}</p>
+  }
+
+  <div class="card-meta">
+    @if (task().dueDate) {
+      <span class="due-date">Due: {{ task().dueDate }}</span>
+    }
+  </div>
+
+  <div class="card-actions">
+    <button class="btn btn-status" (click)="onToggleStatus()">
+      @if (task().status === 'TODO') {
+        Start
+      } @else if (task().status === 'IN_PROGRESS') {
+        Complete
+      } @else {
+        Reopen
+      }
+    </button>
+    <button class="btn btn-edit" (click)="onEdit()">Edit</button>
+    <button class="btn btn-delete" (click)="onDelete()">Delete</button>
+  </div>
+</div>
